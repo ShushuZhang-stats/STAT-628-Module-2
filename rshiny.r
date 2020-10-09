@@ -1,7 +1,7 @@
 library(shiny)
 ui <- fluidPage(
   
-  titlePanel("Body Fat Prediction"),
+  titlePanel("Body Fat Prediction (If you have any questions about the result, contact 608-404-4444)"),
   
   sliderInput(inputId = "weight",
               label = "Weight(lbs):",
