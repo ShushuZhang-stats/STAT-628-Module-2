@@ -40,7 +40,7 @@ ui <- fluidPage(
       br(),
       h4("Contact Us"),
       p("If you have any questions about the result, please feel free to contact us with email."),
-      p("Hao Tong ()"),
+      p("Hao Tong (htong25@wisc.edu)"),
       p("Yuan Cao (cao234@wisc.edu)"),
       p("Shushu Zhang ()")
     )
