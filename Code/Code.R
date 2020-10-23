@@ -98,9 +98,9 @@ mod=lm(BODYFAT~.-IDNO-DENSITY,data=data)
 summary(mod)
 library(olsrr)
 ols_step_best_subset(mod)
-mod_final=lm(BODYFAT~WEIGHT+NECK+ABDOMEN+FOREARM+WRIST,data=data)
+mod_final=lm(BODYFAT~WEIGHT+NECK+ABDOMEN+BICEPS+FOREARM+WRIST,data=data)
 summary(mod_final) 
-## Final Model: -24.42-0.12*WEIGHT-0.34*NECK+0.95*ABDOMEN+0.58*FOREARM-1.42*WRIST
+## Final Model: -28.81-0.13*WEIGHT-0.38*NECK+0.94*ABDOMEN+0.23*BICEPS+0.41*FOREARM-1.14*WRIST
 
 # Diagnostics
 
