@@ -87,7 +87,7 @@ data$FOREARM[175]=round(mod_forearm$fitted.values[175],2)
 ### BodyFat (48 96 182 219)
 mod_BodyFat=lm(BODYFAT~DENSITY,data=data)
 data$BODYFAT[c(48,76,96)]=round(mod_BodyFat$fitted.values[c(48,76,96)],2)
-data=data[-c(182,219),] #Remove 182,216
+data=data[-c(182,216),] #Remove 182,216
 
 ## Write Cleaned Data Out
 write.csv(data,"../Data/Data_Cleaned.csv")
@@ -100,7 +100,7 @@ library(olsrr)
 ols_step_best_subset(mod)
 mod_final=lm(BODYFAT~WEIGHT+NECK+ABDOMEN+BICEPS+FOREARM+WRIST,data=data)
 summary(mod_final) 
-## Final Model: -28.81-0.13*WEIGHT-0.38*NECK+0.94*ABDOMEN+0.23*BICEPS+0.41*FOREARM-1.14*WRIST
+## Final Model: -25.99-0.136*WEIGHT-0.399*NECK+0.94*ABDOMEN+0.29*BICEPS+0.445*FOREARM-1.36*WRIST
 
 # Diagnostics
 
