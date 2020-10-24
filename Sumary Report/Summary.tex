@@ -1,4 +1,4 @@
-\documentclass[12pt, letterpaper]{article}
+\documentclass[11pt, letterpaper]{article}
 
 \usepackage{statcourse}
 \usepackage{setspace}
@@ -13,7 +13,7 @@
 \usepackage{threeparttable}
 \usepackage{subfigure}
 
-\geometry{letterpaper,left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm}
+\geometry{letterpaper,left=2.54cm,right=2.54cm,top=0cm,bottom=2.54cm}
 
 
 
@@ -41,7 +41,7 @@
 
 \section{Introduction}
 
-Body fat is a highly specialized organ, critically important for health and longevity \cite{ludwig2016always}. It can be one of the most useful index for determining health and achieving fitness goal of an individual, even more than BMI. However, measurement techniques such as underwater weighing and air displacement plethysmography are always cumbersome to apply. Thus, it is meaningful to come up with a easier method to estimate the body fat with clinically available measurements, like body weight. Therefore, we are given a data set containing 252 observations whose body fat is accurately measuared and calculated by underwater weighing, together with 14 accessible predictors. 
+Body fat is a highly specialized organ, critically important for health and longevity \cite{ludwig2016always}. It can be one of the most useful index for determining health and achieving fitness goal of an individual, even more than BMI. However, measurement techniques such as underwater weighing and air displacement plethysmography are always cumbersome to apply. Thus, it is meaningful to come up with a easier method to estimate the body fat with clinically available measurements. We are given a data set containing 252 observations whose body fat is accurately measuared and calculated by underwater weighing, together with 14 accessible predictors. 
 %The report is organized as follows. Our rule is  
 
 \section{Overall Findings \& Rule of Thumb}
@@ -62,13 +62,15 @@ In this rule of thumb, the predictors are easily obtained in daily life. These s
 To obtain the aforementioned rule of thumb, we need to first clean the data in \Cref{subsec:Cleaning}, and then fit a proper model in \Cref{subsec:model}. 
 \subsection{Data Cleaning}
 \label{subsec:Cleaning}
-In current context, it is natural to detect outliers by each variable seperately using techniques such as box plot. However, in data cleaning, we intend to impute the outliers that rise due to human errors instead of natural deviations in population distributions. In our case, the predictor variables have great redundancy (i.e. highly related) in this case. For example, ``ADIPOSITY", ``WEIGHT", and ``HEIGHT" are strictly related with the following equation 
-$$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$$
-Anomalous observations that are supposed to be imputed or removed in advance, must have some inconsistency in different variables, while univariate outliers does not necessarily indicate anomalous observations. For example, observation No. 39 is way outlined in every variable, which will definitely be considered as an outlier if we consider variables seperately. However, it deviated in almost every variable at a similar degree, making it a reasonable observation of a highly overweight and obese person, thus the observation shouldn't been imputed. 
+%It is natural to detect outliers by each variable seperately using techniques such as box plot. However, in data cleaning, we intend to impute the outliers that rise due to human errors instead of natural deviations in population distributions. In our case, the predictor variables have great redundancy (i.e. highly related). For example, ``ADIPOSITY", ``WEIGHT", and ``HEIGHT" are strictly related with the following equation 
+%$$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$$
+%Anomalous observations that are supposed to be imputed or removed in advance, must have some inconsistency in different variables, while univariate outliers does not necessarily indicate anomalous observations. For example, observation No. 39 is way outlined in every variable, which will definitely be considered as an outlier if we consider variables seperately. However, it deviated in almost every variable at a similar degree, making it a reasonable observation of a highly overweight and obese person, thus the observation shouldn't been imputed. 
 
-In order to detect the anomalous observations to be imputed based on the aforementioned criteria, we introduce multivariate detections, namely, fitting linear regressions for every variable with respect to other related variables using Residuals or Cook's Distance as a anomalous measure. Then, we concentrate on the extreme (maximum/minimum) values of each variable to make sure they make sense with practical meaning of the certain variable. To be more specific, in step 1, we fit ``DENSITY" with all other variables except ``IDNO" and ``BODYFAT" to make sure there is no obvious observation error in ``DENSITY". Then, we fit ``BODYFAT" with ``DENSITY", resulting in two outliers \emph{No. 48} and \emph{No. 96}. In addition, we detect the relationship among ``ADIPOSITY", ``WEIGHT", and ``HEIGHT" by the aforementioned equation, leading to an abnormal observation \emph{No. 42}. Then, the rest of the variables are regressed similarly with all other variables except ``IDNO", resulting in anomalous observations of \emph{No. 31} and \emph{No. 86} for ``ANKLE", \emph{No. 175} for ``FOREARM". We impute all of the aforementioned anomalous observations with fitted values in the linear model or the defined equation. We can even infer the error mechanisms for some imputations. No. 42, which has anomalously low value only in ``HEIGHT", can be imputed by the induced (or say redundent) variable ``ADIPOSITY" defined as 
-$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$
-As a result, ``HEIGHT" OF No. 42, 29.50, is replaced by 69.45, indicating 6 is probably mistyped by 2. Note that No. 163 and No. 221 also have slight mismatches in the relation of ``ADIPOSITY" with ``WEIGHT" and ``HEIGHT". But all three variables are in reasonable ranges, making it hard to determine the ``bad" observations. Therefore, we determine to leave as they are. 
+In order to detect the anomalous observations due to human errors instead of natural deviations in population distributions, we introduce \textbf{multivariate detections}, namely, fitting linear regressions for every variable with respect to other related variables using Residuals or Cook's Distance as a anomalous measure. Then, we concentrate on the extreme (maximum/minimum) values of each variable to make sure they make sense with practical meaning of the certain variable. To be more specific, in step 1, we fit ``DENSITY" with all other variables except ``IDNO" and ``BODYFAT" to make sure there is no obvious observation error in ``DENSITY". Then, we fit ``BODYFAT" with ``DENSITY", resulting in two outliers \emph{No. 48} and \emph{No. 96}. In addition, we detect an abnormal observation \emph{No. 42} by $\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$. Then, the rest of the variables are regressed similarly with all other variables except ``IDNO", resulting in anomalous observations of \emph{No. 31} and \emph{No. 86} for ``ANKLE", \emph{No. 175} for ``FOREARM". We impute all of the aforementioned anomalous observations with fitted values in the linear model or the defined equation. 
+%We can even infer the error mechanisms for some imputations. No. 42, which has anomalously low value only in ``HEIGHT", can be imputed by the induced (or say redundent) variable ``ADIPOSITY" defined as 
+%$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$
+%As a result, ``HEIGHT" OF No. 42, 29.50, is replaced by 69.45. 
+%indicating 6 is probably mistyped by 2. Note that No. 163 and No. 221 also have slight mismatches in the relation of ``ADIPOSITY" with ``WEIGHT" and ``HEIGHT". But all three variables are in reasonable ranges, making it hard to determine the ``bad" observations. Therefore, we determine to leave as they are. 
 
 In step 2, we use boxplot to detect the outliers in the target variable ``BODYFAT", resulting in finding the higher-end outlier \emph{No.216} and lower-end unreasonble point \emph{No. 182} with zero body fat. Owing to the uncertainty of the anomalous mechanism, we simply remove these two observations. 
 
@@ -79,7 +81,7 @@ In choosing the appropriate kind of model for handling this problem, linear regr
 \begin{table}[h!]
 	\centering
 	\caption{Estimated Coefficients}
-	\resizebox{0.8\textwidth}{!}{
+	\resizebox{0.4\textwidth}{!}{
 		\begin{tabular}{ccccccccccc}
 			\hline\hline
 &Estimate& Std. Error& t value &p value   \\
@@ -104,17 +106,17 @@ For the linear model, we have the following assumptions: (1) observations are in
 	\label{fig:2}
 	\begin{subfigure}
 		\centering
-		\includegraphics[width=.4\linewidth]{../Image/qq_plot.png}
+		\includegraphics[width=.2\linewidth]{../Image/qq_plot.png}
 	\end{subfigure}%
 ~
 	\begin{subfigure}
 		\centering
-		\includegraphics[width=.4\linewidth]{../Image/Final_Model_Residual_Plot.png}
+		\includegraphics[width=.2\linewidth]{../Image/Final_Model_Residual_Plot.png}
 	\end{subfigure}
 	\begin{subfigure}
 		%{.5\textwidth}
 	\centering
-	\includegraphics[width=.5\linewidth]{../Image/Pii_Cook's_Distance.png}
+	\includegraphics[width=.3\linewidth]{../Image/Pii_Cook's_Distance.png}
 \end{subfigure}
 	\caption{Diagnostics for Final Model}
 \end{figure}
@@ -125,7 +127,9 @@ The strengths of our model lies in the interpretability, computation efficiency 
 As we come to a conclusion, we can use \Cref{eq:model} to calculate our body fat where abodomen circumference is the most importance predictor, followed by weight. 
 
 \section{Contributions}
-SZ: 
+SZ:  
+
+
 \pagebreak
 
 {\small
