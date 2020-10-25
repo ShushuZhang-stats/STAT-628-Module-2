@@ -13,9 +13,7 @@
 \usepackage{threeparttable}
 \usepackage{subfigure}
 
-\geometry{letterpaper,left=2.54cm,right=2.54cm,top=.5cm,bottom=2.54cm}
-
-
+\geometry{letterpaper,left=1in,right=1in,top=1in,bottom=1in}
 
 % Include other packages here, before hyperref.
 
@@ -25,10 +23,8 @@
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 \usepackage{cleveref}
 
-
 \statcoursefinalcopy
 \linespread{1.0}
-
 
 %opening
 \title{Body Fat Calculator}
@@ -36,17 +32,24 @@
 
 \begin{document}
 
+%\maketitle
+\begin{center}
+\begin{spacing}{1}
+\Large\textbf{Body Fat Calculator} 
 
-\maketitle
+\normalsize Hao Tong, Yuan Cao, Shushu Zhang
+\end{spacing}
+\end{center}
 
 \section{Introduction}
 \label{sec:1}
-Body fat is a highly specialized organ, critically important for health and longevity \cite{ludwig2016always}. It can be one of the most useful index for determining health and achieving fitness goal of an individual, even more than BMI. However, measurement techniques such as underwater weighing and air displacement plethysmography are always cumbersome to apply. Thus, it is meaningful to come up with a easier method to estimate the body fat with clinically available measurements. We are given a data set containing 252 observations whose body fat is accurately measuared and calculated by underwater weighing, together with 14 accessible predictors. 
-%The report is organized as follows. Our rule is  
+Body fat is a highly specialized organ, critically important for health and longevity\footnote{\url{https://www.sciencefriday.com/articles/why-we-need-body-fat/}}. It can be one of the most useful index for determining health and achieving fitness goal of an individual, even more than BMI. However, measurement techniques such as underwater weighing and air displacement plethysmography are 
+cumbersome to apply. Thus, it is meaningful to produce an easier method to estimate body fat with clinical measurements. We are given a data set containing 252 men observations whose body fat is accurately measuared and calculated by underwater weighing, together with 14 accessible predictors. 
 
 \section{Overall Findings \& Rule of Thumb}
 \label{sec:2}
 Regressed from the 14 predictors in the data set, "Bodyfat" can be estimated as
+\begin{small}
 \begin{equation}\label{eq:model}
 \begin{aligned}
 \mathrm{Bodyfat}=
@@ -54,6 +57,8 @@ Regressed from the 14 predictors in the data set, "Bodyfat" can be estimated as
 +0.41\mathrm{FOREARM}-1.14\mathrm{WRIST}.
 \end{aligned}
 \end{equation}
+\end{small}
+
  
 In this rule of thumb, the predictors are easily obtained in daily life. These six measurements are correlated to some extent. For example, one's abdomen circumference will typically increase as he gains weight. However, to obtain more accurate estimation of bodyfat, we typically need to know how much abdomen circumference has been increased per pound he gains. In the extreme case, if a men gains 1lb in weight but does not have any change in other variables sugguesting that he is building muscles instead of gaining fat, the model indicates that he will lose 0.13 in bodyfat. 
 
@@ -67,7 +72,7 @@ To obtain the aforementioned rule of thumb, we need to first clean the data in \
 %$$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$$
 %Anomalous observations that are supposed to be imputed or removed in advance, must have some inconsistency in different variables, while univariate outliers does not necessarily indicate anomalous observations. For example, observation No. 39 is way outlined in every variable, which will definitely be considered as an outlier if we consider variables seperately. However, it deviated in almost every variable at a similar degree, making it a reasonable observation of a highly overweight and obese person, thus the observation shouldn't been imputed. 
 
-In order to detect the anomalous observations due to human errors instead of natural deviations in population distributions, we introduce \textbf{multivariate detections}, namely, fitting linear regressions for every variable with respect to other related variables using Residuals or Cook's Distance as a anomalous measure. Then, we concentrate on the extreme (maximum/minimum) values of each variable to make sure they make sense with practical meaning of the certain variable. To be more specific, in step 1, we fit ``DENSITY" with all other variables except ``IDNO" and ``BODYFAT" to make sure there is no obvious observation error in ``DENSITY". Then, we fit ``BODYFAT" with ``DENSITY", resulting in two outliers \emph{No. 48} and \emph{No. 96}. In addition, we detect an abnormal observation \emph{No. 42} by $\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$. Then, the rest of the variables are regressed similarly with all other variables except ``IDNO", resulting in anomalous observations of \emph{No. 31} and \emph{No. 86} for ``ANKLE", \emph{No. 175} for ``FOREARM". We impute all of the aforementioned anomalous observations with fitted values in the linear model or the defined equation. 
+In order to detect the anomalous observations due to human errors instead of natural deviations in population distributions, we introduce \textbf{multivariate detections}, namely, fitting linear regressions for every variable with respect to other related variables using Residuals or Cook's Distance as a anomalous measure. Then, we concentrate on the extreme (maximum/minimum) values of each variable to make sure they make sense with practical meaning of the certain variable. To be more specific, in step 1, we fit ``DENSITY" with all other variables except ``IDNO" and ``BODYFAT" to make sure there is no obvious observation error in ``DENSITY". Then, we fit ``BODYFAT" with ``DENSITY", resulting in two outliers \emph{No. 48} and \emph{No. 96}. In addition, we detect an abnormal observation \emph{No. 42} by $\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}$. Then, the rest of the variables are regressed similarly with all other variables except ``IDNO", resulting in anomalous observations of \emph{No. 31} and \emph{No. 86} for ``ANKLE", \emph{No. 175} for ``FOREARM". We impute all of the aforementioned anomalous observations with fitted values in the linear model or the defined equation. 
 %We can even infer the error mechanisms for some imputations. No. 42, which has anomalously low value only in ``HEIGHT", can be imputed by the induced (or say redundent) variable ``ADIPOSITY" defined as 
 %$\mathrm{ADIPOSITY(bmi)} = \mathrm{BODY WEIGHT(kg)} : \mathrm{BODY HEIGHT(m^2)}.$
 %As a result, ``HEIGHT" OF No. 42, 29.50, is replaced by 69.45. 
@@ -75,9 +80,15 @@ In order to detect the anomalous observations due to human errors instead of nat
 
 In step 2, we use boxplot to detect the outliers in the target variable ``BODYFAT", resulting in finding the higher-end outlier \emph{No.216} and lower-end unreasonble point \emph{No. 182} with zero body fat. Owing to the uncertainty of the anomalous mechanism, we simply remove these two observations. 
 
+
+\pagebreak
+\newgeometry{letterpaper,left=1in,right=1in,top=0.67in,bottom=1in}
+
+
 \subsection{Model Selection}
 \label{subsec:model}
-In choosing the appropriate kind of model for handling this problem, linear regression outperforms several advanced machine learning models such as neural network in terms of both statistical accuracy and computational costs. For predictor selections, we use "olsrr:ols\_step\_best\_subset" function to obtain a subset of predictors that contribute to a large $R^2$ value with less variables. As a matter of fact, "abdomen" alone contributes to 0.63 $R^2$, making it the most important predictor among all, followed by "weight" variable. For better statistical accuracy, we finally use ``WEIGHT", ``NECK", ``ABDOMEN", ``BICEPS", ``FOREARM", ``WRIST" these six variables as predictors in linear regression model with $R^2$ 0.74, and other estimation and inference information listed in \Cref{tab:1}. 
+In choosing the appropriate kind of model for handling this problem, linear regression outperforms several advanced machine learning models such as neural network in terms of both statistical accuracy and 
+computational costs. For predictor selections, we use "olsrr:ols\_step\_best\_subset" function to obtain a subset of predictors that contribute to a large $R^2$ value with less variables. As a matter of fact, "abdomen" alone contributes to 0.63 $R^2$, making it the most important predictor among all, followed by "weight" variable. For better statistical accuracy, we finally use ``WEIGHT", ``NECK", ``ABDOMEN", ``BICEPS", ``FOREARM", ``WRIST" these six variables as predictors in linear regression model with $R^2$ 0.74, and other estimation and inference information listed in \Cref{tab:1}. 
 
 \begin{table}[h!]
 	\centering
@@ -101,26 +112,27 @@ WRIST    &    -1.14274 &   0.43254 & -2.642 & 0.00877 ** \\
 
 \section{Diagnostics}
 \label{sec:diag}
-For the linear model, we have the following assumptions: (1) observations are independent; (2) homoscedasticity; (3)linearity of the model; (4) error terms are normally distributed. The qq plot \Cref{fig:2} indicates that the residuals which are the estimations of error terms are approximately normally distributed. The standardized residual plot in \Cref{fig:2} suggests that the model is linear and homoscedastic, and there is no obvious outliers in the model, demonstrating the effectiveness of data cleaning. Based on Pii measure and Cook's distance in \Cref{fig:2}, we notice there are several leverage values and influence values, indicating there are points contributing to the model more than other points. However, they are not outliers. In conclusion, the assumptions of the model are satisfied. 
+For the linear model, we have the following assumptions: (1) observations are independent; (2) homoscedasticity; (3)linearity of the model; (4) error terms are normally distributed. The QQ plot in \Cref{fig:2} indicates that the residuals which are the estimations of error terms are approximately normally distributed. The standardized residual plot in \Cref{fig:2} suggests that the model is linear and homoscedastic, and there is no obvious outliers in the model, demonstrating the effectiveness of data cleaning. Based on Pii measure and Cook's distance in \Cref{fig:2}, we notice there are several leverage values and influence values, indicating there are points contributing to the model more than other points. However, they are not outliers. In conclusion, the assumptions of the model are satisfied. 
+
 \begin{figure}
 	\centering
-	\label{fig:2}
 	\begin{subfigure}
 		\centering
 		\includegraphics[width=.2\linewidth]{../Image/qq_plot.png}
 	\end{subfigure}%
-~
 	\begin{subfigure}
 		\centering
 		\includegraphics[width=.2\linewidth]{../Image/Final_Model_Residual_Plot.png}
 	\end{subfigure}
 	\begin{subfigure}
 		%{.5\textwidth}
-	\centering
-	\includegraphics[width=.3\linewidth]{../Image/Pii_Cook's_Distance.png}
-\end{subfigure}
+	    \centering
+	    \includegraphics[width=.2\linewidth]{../Image/Pii_Cook's_Distance.png}
+    \end{subfigure}
 	\caption{Diagnostics for Final Model}
+	\label{fig:2}
 \end{figure}
+
 \section{Strengths and Weaknesses}
 \label{sec:str}
 The strengths of our model lies in the interpretability, computation efficiency and predictability (i.e. statistical accuracy) as mentioned above. On the other hand, although the linearity assumption is approximately satisfied in \Cref{sec:diag}, these variables may not be linearly related to bodyfat in practice. 
@@ -130,17 +142,9 @@ The strengths of our model lies in the interpretability, computation efficiency 
 As we come to a conclusion, we can use \Cref{eq:model} to calculate our body fat where abodomen circumference is the most importance predictor, followed by weight. 
 
 \section{Contributions}
-\noindent SZ: Data Cleaning of R code, \Cref{sec:2}\&\Cref{sec:3} of the Summary, Summary of Data Cleaning & Finding best model of the slides, Building shiny app.\\
-YC: Model Diagnostics of R code,  \Cref{sec:1}\&\Cref{sec:diag} of the Summary, Discussing results & Analyzing final model of the slides, Building shiny app.\\
-HT: Model building of R code, \Cref{sec:diag}\& \Cref{sec:str}\&\Cref{sec:con} of the Summary, Discussing final model's Statistical properties, Diagnostics & Strength and weakness of the slides, Building shiny app.\\
-
-\pagebreak
-
-{\small
-\bibliographystyle{plain}
-\bibliography{hungry.bib}
-}
-
+\noindent SZ: \Cref{sec:2} \& \Cref{sec:3} of the Summary, Page 4-6, 13-14 of Slides.\\
+YC: \Cref{sec:1} \& \Cref{sec:diag} of the Summary, Page 1-3, 15-18 of Slides.\\
+HT: \Cref{sec:diag} \& \Cref{sec:str} \& \Cref{sec:con} of the Summary, Page 7-12 of Slides.\\
 
 
 \end{document}
