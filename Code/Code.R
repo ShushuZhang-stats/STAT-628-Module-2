@@ -1,3 +1,8 @@
+# Contribution of this code is listed as follows
+## SZ: Data Cleaning of R code
+## YC: Model Diagnostics of R code
+## HT: Model building of R code
+
 # Import Data
 data=read.csv("../Data/BodyFat.csv")
 head(data)
@@ -100,7 +105,7 @@ library(olsrr)
 ols_step_best_subset(mod)
 mod_final=lm(BODYFAT~WEIGHT+NECK+ABDOMEN+BICEPS+FOREARM+WRIST,data=data)
 summary(mod_final) 
-## Final Model: -25.99-0.136*WEIGHT-0.399*NECK+0.94*ABDOMEN+0.29*BICEPS+0.445*FOREARM-1.36*WRIST
+## Final Model: -28.81-0.13*Weight-0.38*Neck+0.94*Abdomen+0.23*Biceps+0.41*Forearm-1.14*Wrist 
 
 # Diagnostics
 
@@ -115,7 +120,7 @@ qqnorm(rstandard(mod_final),pch=19,cex=1.2,cex.lab=1.5,cex.main=1.5,
        main="Normal Q-Q Plot of the Residuals")
 abline(a=0,b=1,col="black",lwd=3)
 
-## 
+## Leverage and Influence Plot
 pii = hatvalues(mod_final)
 cooki = cooks.distance(mod_final)
 
