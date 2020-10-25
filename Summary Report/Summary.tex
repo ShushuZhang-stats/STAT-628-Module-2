@@ -40,7 +40,7 @@
 \maketitle
 
 \section{Introduction}
-
+\label{sec:1}
 Body fat is a highly specialized organ, critically important for health and longevity \cite{ludwig2016always}. It can be one of the most useful index for determining health and achieving fitness goal of an individual, even more than BMI. However, measurement techniques such as underwater weighing and air displacement plethysmography are always cumbersome to apply. Thus, it is meaningful to come up with a easier method to estimate the body fat with clinically available measurements. We are given a data set containing 252 observations whose body fat is accurately measuared and calculated by underwater weighing, together with 14 accessible predictors. 
 %The report is organized as follows. Our rule is  
 
@@ -59,6 +59,7 @@ In this rule of thumb, the predictors are easily obtained in daily life. These s
 
 
 \section{Statistical Analysis}
+\label{sec:3}
 To obtain the aforementioned rule of thumb, we need to first clean the data in \Cref{subsec:Cleaning}, and then fit a proper model in \Cref{subsec:model}. 
 \subsection{Data Cleaning}
 \label{subsec:Cleaning}
@@ -121,15 +122,17 @@ For the linear model, we have the following assumptions: (1) observations are in
 	\caption{Diagnostics for Final Model}
 \end{figure}
 \section{Strengths and Weaknesses}
+\label{sec:str}
 The strengths of our model lies in the interpretability, computation efficiency and predictability (i.e. statistical accuracy) as mentioned above. On the other hand, although the linearity assumption is approximately satisfied in \Cref{sec:diag}, these variables may not be linearly related to bodyfat in practice. 
 
 \section{Conclusion}
+\label{sec:con}
 As we come to a conclusion, we can use \Cref{eq:model} to calculate our body fat where abodomen circumference is the most importance predictor, followed by weight. 
 
 \section{Contributions}
-SZ:  \\
-YC:   \\
-HT:   \\
+\noindent SZ: Data Cleaning of R code, \Cref{sec:2}\&\Cref{sec:3} of the Summary, \\
+YC: Model Diagnostics of R code,  \Cref{sec:1}\&\Cref{sec:diag} of the Summary, \\
+HT: Model building of R code, \Cref{sec:diag}\& \Cref{sec:str}\&\Cref{sec:con} of the Summary, \\
 
 \pagebreak
 
