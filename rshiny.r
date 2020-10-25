@@ -1,8 +1,11 @@
 library(shiny)
 library(shinydashboard)
 
+# user interface design
 ui <- dashboardPage(
+  # title
   dashboardHeader(title = "Body Fat Calculator"),
+  # sidebar
   dashboardSidebar(
     sidebarMenu(
       menuItem("Calculator", tabName = "calculator", icon = icon("calculator")),
@@ -10,6 +13,7 @@ ui <- dashboardPage(
       menuItem("Reference", tabName = "ref", icon = icon("book"))
     )
   ),
+  # main body
   dashboardBody(
     #Multiple Tabs
     tabItems(
@@ -17,6 +21,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "calculator",
         fluidRow(
+          # A simple readme
           column(
             width = 12,
             box(
@@ -38,7 +43,7 @@ ui <- dashboardPage(
               textOutput("lbs")
             )
           ),
-          #Input box
+          # Input box
           box(
             title = "Enter your information",
             status = "primary",
@@ -93,13 +98,13 @@ ui <- dashboardPage(
               step = 0.1)
           ),
           
-          #Result box 
+          # Result box 
           box(
             title = "Result",
             textOutput("value")
           ),
           
-          #Suggestion box
+          # Suggestion box
           box(
             title = "Suggestion",
             htmlOutput("sugg")
@@ -107,10 +112,11 @@ ui <- dashboardPage(
         )
       ),
       
-      #second tab is contact information
+      # second tab is contact information
       tabItem(
         tabName = "contact",
         h4("Contact Us"),
+        p("This calculator is built by Hao Tong, Yuan Cao and Shushu Zhang, Hao created original app, Yuan updated UI and Shushu updated server."),
         p("If you have any problem when using this calculator, please 
                   feel free to contact us with email."),
         p("Hao Tong (htong25@wisc.edu)"),
@@ -118,7 +124,7 @@ ui <- dashboardPage(
         p("Shushu Zhang (szhang695@wisc.edu)")
       ),
       
-      #third tab contains some references
+      # third tab contains some references
       tabItem(
         tabName = "ref",
         h4("Reference"),
@@ -129,14 +135,18 @@ ui <- dashboardPage(
   )
 )
 
+# server function
 server<-function(input,output){
+  # body fat result
   re=reactive({
-    -25.99-0.136*input$weight-0.4*input$neck+0.94*input$abdomen+0.29*input$biceps+0.445*input$forearm-1.36*input$wrist
+    -28.81-0.13*input$weight-0.38*input$neck+0.94*input$abdomen+0.23*input$biceps+0.41*input$forearm-1.14*input$wrist
   })
   
+  # convert unit
   output$inch=renderText(paste("Your height is ", round(input$cm/2.54,2), "inches.", sep = ""))
   output$lbs=renderText(paste("Your weight is ", round(input$kg*2.2046,2), "lbs.", sep = ""))
   
+  # output body fat to user
   output$value=renderText({
     if ((input$weight/input$height)>4 | (input$weight/input$height)<1){ 
       if (re()>0) {
@@ -154,6 +164,7 @@ server<-function(input,output){
     }
   })
   
+  # judgment of bodyfat value
   ideal=reactive({
     if (re()<6) {
       "Your body even do not have essential fat for basic physical and physiological health!"
@@ -172,10 +183,12 @@ server<-function(input,output){
     }
   })
   
+  # suggestion output
   output$sugg=renderUI({
     HTML(paste("The Judgement of body fat percentage below is based on ideal body fat percentage chart from American Council on Exercise (ACE).", ideal(), sep = "<br/><br/>"))
   })
   
+  # some reference
   wikiurl=a("Body fat percentage.", href="https://en.wikipedia.org/wiki/Body_fat_percentage")
   output$url=renderUI({
     tagList("Wikipedia page for body fat:", wikiurl)
